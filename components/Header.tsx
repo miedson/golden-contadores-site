@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { navItems, site, socialLinks } from "@/components/site-data";
 
@@ -22,17 +25,29 @@ function SocialIcon({ name }: { name: string }) {
 }
 
 export function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle("drawer-open", isOpen);
+    document.documentElement.classList.toggle("drawer-open", isOpen);
+
+    return () => {
+      document.body.classList.remove("drawer-open");
+      document.documentElement.classList.remove("drawer-open");
+    };
+  }, [isOpen]);
+
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 20, backdropFilter: "blur(18px)" }}>
       <div className="topbar">
         <div className="container topbar-inner">
-          <div style={{ display: "flex", gap: "1.2rem", flexWrap: "wrap" }}>
+          <div className="topbar-contact" style={{ display: "flex", gap: "1.2rem", flexWrap: "wrap" }}>
             <a href={`tel:${site.phone.replace(/\D/g, "")}`}>{site.phone}</a>
             <a href={`mailto:${site.email}`}>{site.email}</a>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <div className="topbar-meta" style={{ display: "flex", alignItems: "center", gap: "0.85rem" }}>
             <span>{site.address}</span>
-            <div aria-label="Redes sociais" style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
+            <div className="topbar-socials" aria-label="Redes sociais" style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
               {socialLinks.map((item) => (
                 <Link
                   key={item.name}
@@ -57,13 +72,14 @@ export function Header() {
         </div>
       </div>
       <div
+        className="header-shell"
         style={{
           borderBottom: "1px solid rgba(24, 58, 143, 0.08)",
           background: "rgba(255, 255, 255, 0.92)"
         }}
       >
         <div
-          className="container"
+          className={`container header-main${isOpen ? " is-open" : ""}`}
           style={{
             display: "flex",
             alignItems: "center",
@@ -74,7 +90,7 @@ export function Header() {
             padding: "0.45rem 0"
           }}
         >
-          <Link href="#inicio" style={{ display: "flex", alignItems: "center", gap: "0.9rem" }}>
+          <Link className="header-logo" href="#inicio" style={{ display: "flex", alignItems: "center", gap: "0.9rem" }} onClick={() => setIsOpen(false)}>
             <Image
               src="/golden-contadores-enhanced-transparent.svg"
               alt="Golden Contadores"
@@ -85,11 +101,30 @@ export function Header() {
             />
           </Link>
 
-          <nav aria-label="Navegação principal" style={{ display: "flex", flexWrap: "wrap", gap: "1.35rem", alignItems: "center" }}>
+          <button
+            type="button"
+            className="header-toggle"
+            aria-expanded={isOpen}
+            aria-controls="header-drawer"
+            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+            onClick={() => setIsOpen((current) => !current)}
+          >
+            <span className="line-1" />
+            <span className="line-2" />
+            <span className="line-3" />
+          </button>
+
+          <nav
+            id="header-nav"
+            className="header-nav"
+            aria-label="Navegação principal"
+            style={{ display: "flex", flexWrap: "wrap", gap: "1.35rem", alignItems: "center" }}
+          >
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setIsOpen(false)}
                 style={{ color: "var(--text)", fontSize: "0.95rem", fontWeight: 600, opacity: 0.95 }}
               >
                 {item.label}
@@ -97,10 +132,63 @@ export function Header() {
             ))}
           </nav>
 
-          <Link className="button button-primary" href="#contato" style={{ paddingInline: "1.4rem", minHeight: "2.7rem" }}>
+          <Link
+            className="button button-primary header-cta"
+            href="#contato"
+            onClick={() => setIsOpen(false)}
+            style={{ paddingInline: "1.4rem", minHeight: "2.7rem" }}
+          >
             {site.ctaLabel}
           </Link>
         </div>
+
+        <div
+          className={`header-drawer-backdrop${isOpen ? " is-open" : ""}`}
+          onClick={() => setIsOpen(false)}
+          aria-hidden={isOpen ? "false" : "true"}
+        />
+        <aside
+          id="header-drawer"
+          className={`header-drawer${isOpen ? " is-open" : ""}`}
+          aria-label="Menu móvel"
+          aria-hidden={isOpen ? "false" : "true"}
+        >
+          <div className="header-drawer-inner">
+            <div className="header-drawer-top">
+              <Link href="#inicio" className="header-drawer-logo" onClick={() => setIsOpen(false)}>
+                <Image
+                  src="/golden-contadores-enhanced-transparent.svg"
+                  alt="Golden Contadores"
+                  width={180}
+                  height={182}
+                  priority
+                  style={{ width: "92px", height: "auto", objectFit: "contain" }}
+                />
+              </Link>
+              <button
+                type="button"
+                className="header-drawer-close"
+                aria-label="Fechar menu"
+                onClick={() => setIsOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <nav className="header-drawer-nav" aria-label="Navegação principal mobile">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  style={{ color: "var(--text)", fontSize: "1rem", fontWeight: 600 }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </aside>
       </div>
     </header>
   );

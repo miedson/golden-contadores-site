@@ -27,6 +27,7 @@ export function Footer() {
       <div style={{ background: "#232530", color: "white", padding: "2.5rem 0 1rem" }}>
         <div className="container">
           <div
+            className="footer-grid"
             style={{
               display: "grid",
               gap: "2rem",

@@ -226,16 +226,17 @@ export function Hero() {
               ))}
             </div>
 
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "nowrap", marginTop: "1rem" }}>
-              <Link className="button button-primary" href="#contato" style={{ whiteSpace: "nowrap", minHeight: "2.9rem", paddingInline: "1.25rem" }}>
+            <div className="hero-actions" style={{ display: "flex", gap: "0.75rem", flexWrap: "nowrap", marginTop: "1rem" }}>
+              <Link className="button button-primary hero-action-button" href="#contato" style={{ whiteSpace: "nowrap", minHeight: "2.9rem", paddingInline: "1.25rem" }}>
                 Fale com um especialista
               </Link>
-              <Link className="button button-secondary" href="#solucoes" style={{ whiteSpace: "nowrap", minHeight: "2.9rem", paddingInline: "1.25rem" }}>
+              <Link className="button button-secondary hero-action-button" href="#solucoes" style={{ whiteSpace: "nowrap", minHeight: "2.9rem", paddingInline: "1.25rem" }}>
                 Conheça nossos serviços
               </Link>
             </div>
 
             <div
+              className="hero-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
