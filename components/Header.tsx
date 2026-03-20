@@ -38,7 +38,7 @@ export function Header() {
   }, [isOpen]);
 
   return (
-    <header style={{ position: "sticky", top: 0, zIndex: 20, backdropFilter: "blur(18px)" }}>
+    <header className="site-header" style={{ zIndex: 20, backdropFilter: "blur(18px)" }}>
       <div className="topbar">
         <div className="container topbar-inner">
           <div className="topbar-contact" style={{ display: "flex", gap: "1.2rem", flexWrap: "wrap" }}>

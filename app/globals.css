@@ -212,6 +212,19 @@ textarea {
   display: grid;
 }
 
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 50;
+}
+
+.page-shell {
+  padding-top: 6.2rem;
+}
+
 .header-toggle {
   display: none;
   width: 2.8rem;
