@@ -9,7 +9,7 @@ import { pillars, stats } from "@/components/site-data";
 const heroTextBg =
   "https://images.pexels.com/photos/8837747/pexels-photo-8837747.jpeg?cs=srgb&dl=pexels-yankrukov-8837747.jpg&fm=jpg";
 const heroTextBgAlternative =
-  "https://images.pexels.com/photos/8424482/pexels-photo-8424482.jpeg";
+  "/hero.png";
 
 function parseStatValue(value: string) {
   const numeric = Number.parseInt(value.replace(/\D/g, ""), 10);
@@ -145,7 +145,9 @@ export function Hero() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(90deg, rgba(255,255,255,0.985) 0%, rgba(255,255,255,0.95) 24%, rgba(255,255,255,0.78) 42%, rgba(255,255,255,0.26) 66%, rgba(255,255,255,0.12) 100%)"
+              "linear-gradient(90deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.76) 25%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,0.2) 68%, rgba(255,255,255,0.08) 100%)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)"
           }}
         />
 
@@ -160,8 +162,14 @@ export function Hero() {
             paddingBlock: "1.35rem"
           }}
         >
-          <div style={{ width: "min(100%, 720px)" }}>
-            <span className="eyebrow">Contabilidade estratégica para empresas</span>
+          <div
+            className="hero-content-panel"
+            style={{
+              width: "min(100%, 720px)",
+              padding: "1.15rem 1.35rem 1.2rem"
+            }}
+          >
+            <span className="eyebrow hero-eyebrow">Contabilidade estratégica para empresas</span>
             <h1
               id="hero-titulo"
               className="section-title"
@@ -175,22 +183,34 @@ export function Hero() {
               Elevando padrões, <span className="split-highlight">superando expectativas</span>
             </h1>
             <p
-              className="section-copy"
+              className="section-copy hero-copy"
               style={{
                 maxWidth: "42rem",
                 marginTop: "0.7rem",
                 fontSize: "1rem",
                 lineHeight: 1.5,
-                color: "rgba(29, 36, 54, 0.78)"
+                color: "rgba(29, 36, 54, 0.92)"
               }}
             >
               Seja nosso cliente e mude o jogo sendo nosso parceiro. Atendemos os departamentos
               essenciais da empresa com visão estratégica, organização e proximidade no atendimento.
             </p>
 
-            <div style={{ display: "grid", gap: "0.45rem", marginTop: "0.85rem", maxWidth: "42rem" }}>
+            <div
+              className="hero-pillars"
+              style={{
+                display: "grid",
+                gap: "0.45rem",
+                marginTop: "0.85rem",
+                maxWidth: "42rem"
+              }}
+            >
               {pillars.map((pillar) => (
-                <div key={pillar.title} style={{ display: "flex", gap: "0.85rem", alignItems: "flex-start" }}>
+                <div
+                  key={pillar.title}
+                  className="hero-pillar"
+                  style={{ display: "flex", gap: "0.85rem", alignItems: "flex-start" }}
+                >
                   <div
                     style={{
                       width: "0.78rem",
@@ -203,18 +223,20 @@ export function Hero() {
                   />
                   <div>
                     <strong
+                      className="hero-pillar-title"
                       style={{
                         display: "block",
                         marginBottom: "0.08rem",
                         fontSize: "0.96rem",
-                        color: "rgba(29, 36, 54, 0.96)"
+                        color: "rgba(29, 36, 54, 0.98)"
                       }}
                     >
                       {pillar.title}
                     </strong>
                     <span
+                      className="hero-pillar-text"
                       style={{
-                        color: "rgba(29, 36, 54, 0.72)",
+                        color: "rgba(29, 36, 54, 0.82)",
                         lineHeight: 1.45,
                         fontSize: "0.95rem"
                       }}

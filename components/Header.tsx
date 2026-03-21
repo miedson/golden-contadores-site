@@ -136,7 +136,7 @@ export function Header() {
             className="button button-primary header-cta"
             href="#contato"
             onClick={() => setIsOpen(false)}
-            style={{ paddingInline: "1.4rem", minHeight: "2.7rem" }}
+            style={{ paddingInline: "1.1rem", minHeight: "2.45rem", fontSize: "0.92rem" }}
           >
             {site.ctaLabel}
           </Link>
