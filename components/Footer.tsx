@@ -37,7 +37,7 @@ export function Footer() {
           >
             <div>
               <Image
-                src="/golden-contadores-enhanced-transparent.svg"
+                src="/logo_only_white.svg"
                 alt="Golden Contadores"
                 width={180}
                 height={182}

@@ -242,7 +242,7 @@ textarea {
 }
 
 .page-shell {
-  padding-top: 7.8rem;
+  padding-top: 6rem;
 }
 
 .header-toggle {
@@ -411,6 +411,10 @@ textarea {
 
   .topbar-socials {
     margin-left: auto;
+  }
+
+  .page-shell {
+    padding-top: 7rem;
   }
 
   .header-main {

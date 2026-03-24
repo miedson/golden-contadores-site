@@ -92,12 +92,12 @@ export function Header() {
         >
           <Link className="header-logo" href="#inicio" style={{ display: "flex", alignItems: "center", gap: "0.9rem" }} onClick={() => setIsOpen(false)}>
             <Image
-              src="/golden-contadores-enhanced-transparent.svg"
+              src="/logo_only_dourado.svg"
               alt="Golden Contadores"
               width={180}
               height={182}
               priority
-              style={{ width: "82px", height: "auto", objectFit: "contain" }}
+              style={{ width: "80px", height: "auto", objectFit: "contain" }}
             />
           </Link>
 
@@ -157,12 +157,12 @@ export function Header() {
             <div className="header-drawer-top">
               <Link href="#inicio" className="header-drawer-logo" onClick={() => setIsOpen(false)}>
                 <Image
-                  src="/golden-contadores-enhanced-transparent.svg"
+                  src="/logo_only_dourado.svg"
                   alt="Golden Contadores"
                   width={180}
                   height={182}
                   priority
-                  style={{ width: "92px", height: "auto", objectFit: "contain" }}
+                  style={{ width: "80px", height: "auto", objectFit: "contain" }}
                 />
               </Link>
               <button
