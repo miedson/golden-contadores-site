@@ -10,7 +10,7 @@ import { Hero } from "@/components/Hero";
 import { services, site, socialLinks } from "@/components/site-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://goldencontadores.com.br";
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default function HomePage() {
   const structuredData = {
