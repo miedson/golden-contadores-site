@@ -28,3 +28,5 @@ coverage
 
 # typescript
 *.tsbuildinfo
+runtime-data
+data/google-reviews.json

@@ -7,6 +7,41 @@ services:
       NODE_ENV: production
       PORT: 3000
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://goldencontadores.com.br}
+      GOOGLE_REVIEWS_FILE_PATH: /app/runtime-data/google-reviews.json
     restart: unless-stopped
     ports:
-      - "3006:3000"
+      - "${SITE_PORT:-3006}:3000"
+    volumes:
+      - google_reviews_data:/app/runtime-data
+
+  golden-contadores-reviews-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      GOOGLE_PLACE_NAME: ${GOOGLE_PLACE_NAME:-Golden Contadores}
+      GOOGLE_REVIEWS_TARGET_COUNT: ${GOOGLE_REVIEWS_TARGET_COUNT:-24}
+      GOOGLE_REVIEWS_FILE_PATH: /app/runtime-data/google-reviews.json
+      GOOGLE_BUSINESS_ACCOUNT_ID: ${GOOGLE_BUSINESS_ACCOUNT_ID}
+      GOOGLE_BUSINESS_ACCOUNT_NAME: ${GOOGLE_BUSINESS_ACCOUNT_NAME}
+      GOOGLE_BUSINESS_LOCATION_ID: ${GOOGLE_BUSINESS_LOCATION_ID}
+      GOOGLE_BUSINESS_LOCATION_NAME: ${GOOGLE_BUSINESS_LOCATION_NAME}
+      GOOGLE_BUSINESS_CLIENT_ID: ${GOOGLE_BUSINESS_CLIENT_ID}
+      GOOGLE_BUSINESS_CLIENT_SECRET: ${GOOGLE_BUSINESS_CLIENT_SECRET}
+      GOOGLE_BUSINESS_REFRESH_TOKEN: ${GOOGLE_BUSINESS_REFRESH_TOKEN}
+    command: >
+      sh -lc "node ./scripts/ensure-google-reviews-file.mjs &&
+      while true; do
+        if pnpm reviews:sync; then
+          sleep 86400;
+        else
+          echo 'Google reviews sync failed; retrying in 10 minutes.' >&2;
+          sleep 600;
+        fi;
+      done"
+    restart: unless-stopped
+    volumes:
+      - google_reviews_data:/app/runtime-data
+
+volumes:
+  google_reviews_data:

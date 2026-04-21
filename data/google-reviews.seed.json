@@ -1,0 +1,78 @@
+{
+  "rating": 5,
+  "userRatingsTotal": 32,
+  "reviews": [
+    {
+      "authorName": "Camila Ribeiro",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 2 semanas",
+      "text": "Atendimento muito claro e próximo. A equipe explica com objetividade e passa segurança em cada etapa."
+    },
+    {
+      "authorName": "Rafael Martins",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 1 mês",
+      "text": "Organizaram nossa rotina fiscal e financeira com rapidez. O suporte é ágil e realmente acompanha o dia a dia da empresa."
+    },
+    {
+      "authorName": "Juliana Costa",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 3 semanas",
+      "text": "Excelente experiência. A comunicação é simples, sem burocracia, e o time transmite bastante confiança."
+    },
+    {
+      "authorName": "Felipe Moraes",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 1 mês",
+      "text": "A Golden nos ajudou a ter mais previsibilidade e organização. Hoje temos uma visão muito melhor da operação."
+    },
+    {
+      "authorName": "Larissa Almeida",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 2 meses",
+      "text": "Equipe atenciosa, retorno rápido e orientação prática. Foi uma mudança importante para nossa empresa."
+    },
+    {
+      "authorName": "Bruno Nogueira",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 1 semana",
+      "text": "Gostei muito da proximidade no atendimento. Não é só execução, existe acompanhamento e visão consultiva."
+    },
+    {
+      "authorName": "Amanda Pinheiro",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 3 meses",
+      "text": "Processos bem organizados, linguagem acessível e bastante segurança nas orientações contábeis e fiscais."
+    },
+    {
+      "authorName": "Diego Ferreira",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 2 meses",
+      "text": "A experiência tem sido muito positiva. O atendimento é humano, rápido e realmente resolve."
+    },
+    {
+      "authorName": "Patrícia Souza",
+      "authorUrl": "",
+      "profilePhotoUrl": "",
+      "rating": 5,
+      "relativePublishTimeDescription": "há 1 mês",
+      "text": "Temos mais clareza para tomar decisão hoje. A Golden trouxe organização e confiança para a operação."
+    }
+  ]
+}

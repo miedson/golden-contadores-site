@@ -1,6 +1,7 @@
 import {
   CtaSection,
   DifferentialsSection,
+  ReviewsSection,
   SectorsSection,
   ServicesPreview,
   TeamPhotoSection
@@ -9,6 +10,7 @@ import { Hero } from "@/components/Hero";
 import { services, site, socialLinks } from "@/components/site-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://goldencontadores.com.br";
+export const revalidate = 3600;
 
 export default function HomePage() {
   const structuredData = {
@@ -50,6 +52,7 @@ export default function HomePage() {
         <TeamPhotoSection />
       </div>
       <SectorsSection />
+      <ReviewsSection />
       <div id="contato">
         <CtaSection />
       </div>

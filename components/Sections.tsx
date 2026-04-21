@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { getGoogleReviews } from "@/lib/google-reviews";
 import { moreServicesCard, sectors, services, site } from "@/components/site-data";
 
 export function DifferentialsSection() {
@@ -284,6 +285,119 @@ export function SectorsSection() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+export async function ReviewsSection() {
+  const reviewsData = await getGoogleReviews();
+  const reviewsWithText = reviewsData.reviews.filter((review) => review.text.trim().length > 0);
+  const reviewColumns = [
+    reviewsWithText.filter((_, index) => index % 3 === 0),
+    reviewsWithText.filter((_, index) => index % 3 === 1),
+    reviewsWithText.filter((_, index) => index % 3 === 2)
+  ];
+
+  return (
+    <section className="section section-dark" aria-labelledby="avaliacoes-titulo">
+      <div className="container" style={{ paddingTop: "0.8rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gap: "1.5rem",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(220px, 0.34fr)",
+            alignItems: "start"
+          }}
+        >
+          <div>
+            <span className="eyebrow" style={{ background: "rgba(255,255,255,0.1)", color: "white" }}>
+              Avaliações no Google
+            </span>
+            <h2 id="avaliacoes-titulo" className="section-title" style={{ maxWidth: "15ch", marginTop: "0.8rem" }}>
+              {reviewsData.userRatingsTotal > 0
+                ? `${reviewsData.userRatingsTotal}+ avaliações que reforçam nossa entrega`
+                : "Clientes que reconhecem a diferença no dia a dia"}
+            </h2>
+          </div>
+          <p
+            style={{
+              margin: 0,
+              color: "rgba(255,255,255,0.72)",
+              lineHeight: 1.65,
+              fontSize: "1rem",
+              maxWidth: "16rem",
+              justifySelf: "end"
+            }}
+          >
+            {reviewsData.rating > 0
+              ? `Nota ${reviewsData.rating.toFixed(1)} no Google, com feedbacks que reforçam clareza, proximidade e resultado.`
+              : "Feedbacks que reforçam nosso compromisso com clareza, proximidade e resultado."}
+          </p>
+        </div>
+
+        {reviewsWithText.length > 0 ? (
+          <div className="reviews-columns" style={{ marginTop: "1.8rem" }}>
+            {reviewColumns.map((column, columnIndex) => {
+              const items = [...column, ...column];
+              const directionClass = columnIndex === 1 ? "is-down" : "is-up";
+
+              return (
+                <div key={`column-${columnIndex}`} className={`review-column ${directionClass}`}>
+                  <div className="review-track">
+                    {items.map((review, reviewIndex) => {
+                      const initials = review.authorName
+                        .split(" ")
+                        .slice(0, 2)
+                        .map((part) => part[0])
+                        .join("")
+                        .toUpperCase();
+
+                      return (
+                        <article key={`${review.authorName}-${reviewIndex}`} className="review-card">
+                          <div className="review-stars" aria-label={`${review.rating} estrelas`}>
+                            {"★".repeat(review.rating)}
+                          </div>
+                          <p className="review-text">“{review.text}”</p>
+                          <div className="review-footer">
+                            {review.profilePhotoUrl ? (
+                              <Image
+                                src={review.profilePhotoUrl}
+                                alt={`Foto de ${review.authorName}`}
+                                width={46}
+                                height={46}
+                                className="review-avatar-image"
+                              />
+                            ) : (
+                              <div className="review-avatar" aria-hidden="true">
+                                {initials}
+                              </div>
+                            )}
+                            <div>
+                              {review.authorUrl ? (
+                                <Link
+                                  href={review.authorUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="review-name"
+                                >
+                                  {review.authorName}
+                                </Link>
+                              ) : (
+                                <strong className="review-name">{review.authorName}</strong>
+                              )}
+                              <div className="review-meta">{review.relativePublishTimeDescription}</div>
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </section>
   );

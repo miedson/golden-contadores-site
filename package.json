@@ -7,12 +7,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "reviews:sync": "node --import tsx ./google-reviews.ts",
+    "reviews:ensure": "node ./scripts/ensure-google-reviews-file.mjs"
   },
   "dependencies": {
     "next": "16.1.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@types/node": "^20",
