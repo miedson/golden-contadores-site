@@ -52,6 +52,7 @@ type OAuthTokenResponse = {
   access_token?: string;
   error?: string;
   error_description?: string;
+  error_subtype?: string;
 };
 
 const GOOGLE_OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -61,6 +62,15 @@ const GOOGLE_BUSINESS_REVIEWS_URL = "https://mybusiness.googleapis.com/v4";
 
 const MAX_PAGE_SIZE = 50;
 const projectRoot = process.cwd();
+
+const FATAL_OAUTH_EXIT_CODE = 2;
+
+class FatalOAuthTokenError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "FatalOAuthTokenError";
+  }
+}
 
 loadEnvFile(".env");
 loadEnvFile(".env.local");
@@ -275,6 +285,17 @@ async function getAccessToken() {
 
   if (!response.ok || !payload.access_token) {
     const details = payload.error_description || payload.error || "Unknown OAuth error";
+
+    if (payload.error === "invalid_grant" || details.toLowerCase().includes("expired or revoked")) {
+      throw new FatalOAuthTokenError(
+        [
+          `Failed to obtain Google OAuth access token: ${details}`,
+          "The configured GOOGLE_BUSINESS_REFRESH_TOKEN is no longer usable.",
+          "Generate a new refresh token with the business.manage scope, update the production secret, and restart the reviews sync service."
+        ].join(" ")
+      );
+    }
+
     throw new Error(`Failed to obtain Google OAuth access token: ${details}`);
   }
 
@@ -423,5 +444,5 @@ async function syncGoogleReviews() {
 
 syncGoogleReviews().catch((error) => {
   console.error(error instanceof Error ? error.message : "Failed to sync Google reviews.");
-  process.exit(1);
+  process.exit(error instanceof FatalOAuthTokenError ? FATAL_OAUTH_EXIT_CODE : 1);
 });

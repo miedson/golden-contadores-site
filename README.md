@@ -106,6 +106,33 @@ O sync roda uma vez a cada 24h dentro do container worker.
 
 Se o sync falhar, o worker registra o erro e tenta novamente após 10 minutos, evitando loop agressivo de restart.
 
+### Refresh token expirado ou revogado
+
+Se o worker registrar:
+
+```text
+Failed to obtain Google OAuth access token: Token has been expired or revoked.
+```
+
+o `GOOGLE_BUSINESS_REFRESH_TOKEN` salvo em produção não é mais aceito pelo Google. Retry não resolve esse caso; é preciso gerar um novo refresh token e atualizar o secret no Coolify.
+
+Checklist:
+
+- confirme no Google Cloud Console se a tela de consentimento OAuth não está com publicação `Testing` para usuário externo; nesse modo, refresh tokens podem expirar em 7 dias
+- gere um novo token OAuth com `access_type=offline` e scope `https://www.googleapis.com/auth/business.manage`
+- atualize `GOOGLE_BUSINESS_REFRESH_TOKEN` no Coolify
+- reinicie o serviço `golden-contadores-reviews-sync`
+
+Quando esse erro acontece, o worker registra a mensagem e para de chamar a API do Google até o serviço ser reiniciado.
+
+Nos logs, procure por:
+
+```text
+[GOOGLE_REVIEWS_SYNC_DISABLED]
+```
+
+Outras causas comuns são revogação manual do acesso pelo usuário, token sem uso por muito tempo, rotação de credenciais OAuth, políticas de sessão do Workspace ou excesso de refresh tokens gerados para o mesmo usuário/client ID.
+
 Se quiser subir manualmente:
 
 ```bash

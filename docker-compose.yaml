@@ -32,8 +32,13 @@ services:
     command: >
       sh -lc "node ./scripts/ensure-google-reviews-file.mjs &&
       while true; do
-        if pnpm reviews:sync; then
+        pnpm reviews:sync;
+        status=$$?;
+        if [ $$status -eq 0 ]; then
           sleep 86400;
+        elif [ $$status -eq 2 ]; then
+          echo '[GOOGLE_REVIEWS_SYNC_DISABLED] Reviews sync is paused because Google OAuth credentials are invalid. The site will keep using the last cached reviews file. Update GOOGLE_BUSINESS_REFRESH_TOKEN and restart golden-contadores-reviews-sync.' >&2;
+          while true; do sleep 86400; done;
         else
           echo 'Google reviews sync failed; retrying in 10 minutes.' >&2;
           sleep 600;
