@@ -174,13 +174,15 @@ export function Hero() {
               id="hero-titulo"
               className="section-title"
               style={{
-                maxWidth: "9.2ch",
+                maxWidth: "11ch",
                 marginTop: "0.8rem",
                 fontSize: "clamp(1.95rem, 4.4vw, 3.75rem)",
                 lineHeight: 0.93
               }}
             >
-              Elevando padrões, <span className="split-highlight">superando expectativas</span>
+              <span style={{ display: "block" }}>Cuidando da contabilidade</span>
+              <span style={{ display: "block" }}>com excelência, transparência e</span>
+              <span className="split-highlight" style={{ display: "block" }}>proximidade, todos os dias.</span>
             </h1>
             <p
               className="section-copy hero-copy"
