@@ -79,6 +79,19 @@ const outputFilePath = path.resolve(
   projectRoot,
   process.env.GOOGLE_REVIEWS_FILE_PATH || "data/google-reviews.json"
 );
+const syncStatusFilePath = path.resolve(
+  path.dirname(outputFilePath),
+  process.env.GOOGLE_REVIEWS_SYNC_STATUS_FILE_PATH || "google-reviews.sync-status.json"
+);
+
+async function writeSyncStatus(status: "running" | "success" | "failed", message = "") {
+  await mkdir(path.dirname(syncStatusFilePath), { recursive: true });
+  await writeFile(
+    syncStatusFilePath,
+    `${JSON.stringify({ status, fetchedAt: new Date().toISOString(), message }, null, 2)}\n`,
+    "utf8"
+  );
+}
 
 function loadEnvFile(fileName: string) {
   const filePath = path.resolve(projectRoot, fileName);
@@ -416,6 +429,8 @@ function mapReview(review: GoogleBusinessReview): StoredReview {
 }
 
 async function syncGoogleReviews() {
+  await writeSyncStatus("running", "Google Reviews sync is running.");
+
   const accessToken = await getAccessToken();
   const accountName = await resolveAccountName(accessToken);
   const location = await resolveLocation(accessToken, accountName);
@@ -438,11 +453,16 @@ async function syncGoogleReviews() {
 
   await mkdir(path.dirname(outputFilePath), { recursive: true });
   await writeFile(outputFilePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  await writeSyncStatus("success", "Google Business Profile API sync succeeded.");
 
   console.log(`Saved ${payload.reviews.length} reviews from Google Business Profile API to ${outputFilePath}`);
 }
 
-syncGoogleReviews().catch((error) => {
-  console.error(error instanceof Error ? error.message : "Failed to sync Google reviews.");
+syncGoogleReviews().catch(async (error) => {
+  const message = error instanceof Error ? error.message : "Failed to sync Google reviews.";
+
+  await writeSyncStatus("failed", message);
+  console.error(message);
+
   process.exit(error instanceof FatalOAuthTokenError ? FATAL_OAUTH_EXIT_CODE : 1);
 });

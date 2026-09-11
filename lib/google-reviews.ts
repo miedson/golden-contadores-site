@@ -22,10 +22,20 @@ export type GoogleReviewsPayload = {
   reviews: GoogleReview[];
 };
 
+type SyncStatus = {
+  status?: "running" | "success" | "failed";
+  fetchedAt?: string;
+  message?: string;
+};
+
 const projectRoot = process.cwd();
 const runtimeFilePath = path.resolve(
   projectRoot,
   process.env.GOOGLE_REVIEWS_FILE_PATH || "data/google-reviews.json"
+);
+const syncStatusFilePath = path.resolve(
+  path.dirname(runtimeFilePath),
+  process.env.GOOGLE_REVIEWS_SYNC_STATUS_FILE_PATH || "google-reviews.sync-status.json"
 );
 const seedFilePath = path.resolve(projectRoot, "data/google-reviews.seed.json");
 
@@ -35,18 +45,46 @@ const fallbackPayload: GoogleReviewsPayload = {
   reviews: []
 };
 
-function readJsonFile(filePath: string) {
+function readJsonFile<T = GoogleReviewsPayload | SyncStatus>(filePath: string) {
   if (!existsSync(filePath)) {
     return null;
   }
 
   try {
-    return JSON.parse(readFileSync(filePath, "utf8")) as GoogleReviewsPayload;
+    return JSON.parse(readFileSync(filePath, "utf8")) as T;
   } catch {
     return null;
   }
 }
 
+function isValidGoogleReviewsPayload(payload: GoogleReviewsPayload | null): payload is GoogleReviewsPayload {
+  if (!payload || payload.source !== "google-business-profile-api") {
+    return false;
+  }
+
+  if (!payload.placeName || !payload.fetchedAt) {
+    return false;
+  }
+
+  if (!Array.isArray(payload.reviews) || payload.reviews.length === 0) {
+    return false;
+  }
+
+  return true;
+}
+
 export async function getGoogleReviews() {
-  return readJsonFile(runtimeFilePath) ?? readJsonFile(seedFilePath) ?? fallbackPayload;
+  const runtimePayload = readJsonFile<GoogleReviewsPayload>(runtimeFilePath);
+
+  if (isValidGoogleReviewsPayload(runtimePayload)) {
+    return runtimePayload;
+  }
+
+  const syncStatus = readJsonFile<SyncStatus>(syncStatusFilePath);
+
+  if (syncStatus?.status === "failed" || syncStatus?.status === "running" || !syncStatus) {
+    return readJsonFile<GoogleReviewsPayload>(seedFilePath) ?? fallbackPayload;
+  }
+
+  return readJsonFile<GoogleReviewsPayload>(seedFilePath) ?? fallbackPayload;
 }
