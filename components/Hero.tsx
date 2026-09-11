@@ -128,7 +128,7 @@ export function Hero() {
         style={{
           position: "relative",
           width: "100%",
-          minHeight: "560px",
+          minHeight: "620px",
           overflow: "hidden",
           background: "#eef2fb"
         }}
@@ -156,10 +156,10 @@ export function Hero() {
           style={{
             position: "relative",
             zIndex: 1,
-            minHeight: "560px",
+            minHeight: "620px",
             display: "flex",
             alignItems: "center",
-            paddingBlock: "1.35rem"
+            paddingBlock: "1.1rem"
           }}
         >
           <div
@@ -176,13 +176,20 @@ export function Hero() {
               style={{
                 maxWidth: "11ch",
                 marginTop: "0.8rem",
-                fontSize: "clamp(1.95rem, 4.4vw, 3.75rem)",
-                lineHeight: 0.93
+                fontSize: "clamp(1.82rem, 3.1vw, 2.9rem)",
+                lineHeight: 1.12
               }}
             >
               <span style={{ display: "block" }}>Cuidando da contabilidade</span>
-              <span style={{ display: "block" }}>com excelência, transparência e</span>
-              <span className="split-highlight" style={{ display: "block" }}>proximidade, todos os dias.</span>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>
+                <span className="split-highlight">com excelência, </span>
+              </span>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>
+                <span className="split-highlight">transparência e proximidade, </span>
+              </span>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>
+                <span className="split-highlight">todos os dias.</span>
+              </span>
             </h1>
             <p
               className="section-copy hero-copy"
